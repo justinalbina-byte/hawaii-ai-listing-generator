@@ -17,11 +17,18 @@ def generate_listing():
     pool = input("Pool? (yes/no): ")
     extra = input("One standout feature (e.g. chef's kitchen, newly renovated): ")
 
+    try:
+        sqft_num = float(sqft.replace(",", ""))
+        price_num = float(price.replace(",", "").replace("$", ""))
+        price_per_sqft = round(price_num / sqft_num)
+    except:
+        price_per_sqft = "N/A"
+
     print("")
     print("Generating your listing... please wait.")
     print("")
 
-    message = client.messages.create(
+    listing_response = client.messages.create(
         model="claude-sonnet-4-5",
         max_tokens=1024,
         messages=[
@@ -34,6 +41,7 @@ Bedrooms: {bedrooms}
 Bathrooms: {bathrooms}
 Square footage: {sqft}
 Price: {price}
+Price per sqft: ${price_per_sqft}
 Ocean view: {ocean_view}
 Pool: {pool}
 Standout feature: {extra}
@@ -43,27 +51,118 @@ Write 2 paragraphs, around 150 words total. Make it warm, compelling, and specif
         ]
     )
 
-    listing_text = message.content[0].text
+    listing_text = listing_response.content[0].text
 
-    print("Your AI-generated listing:")
+    analysis_response = client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=512,
+        messages=[
+            {
+                "role": "user",
+                "content": f"""You are a Hawaii real estate expert. Analyze this property and give two things:
+
+1. LISTING SCORE: Rate this property's sellability out of 10 and explain why in 2-3 sentences.
+2. PRICE ANALYSIS: Based on the details, is the asking price competitive, high, or low for this Hawaii neighborhood? Give a brief 2-3 sentence explanation.
+
+Property details:
+Address: {address}
+Neighborhood: {neighborhood}
+Bedrooms: {bedrooms}
+Bathrooms: {bathrooms}
+Square footage: {sqft}
+Price: {price}
+Price per sqft: ${price_per_sqft}
+Ocean view: {ocean_view}
+Pool: {pool}
+Standout feature: {extra}
+
+Format your response exactly like this:
+LISTING SCORE: X/10
+[Your explanation]
+
+PRICE ANALYSIS:
+[Your explanation]"""
+            }
+        ]
+    )
+
+    analysis_text = analysis_response.content[0].text
+
+    print("=" * 50)
+    print("AI-GENERATED LISTING")
+    print("=" * 50)
     print("")
     print(listing_text)
+    print("")
+    print("=" * 50)
+    print("PROPERTY ANALYSIS")
+    print("=" * 50)
+    print("")
+    print(analysis_text)
+    print("")
+    print("=" * 50)
+    print("PROPERTY SUMMARY")
+    print("=" * 50)
+    print(f"Address:        {address}")
+    print(f"Neighborhood:   {neighborhood}")
+    print(f"Bedrooms:       {bedrooms}")
+    print(f"Bathrooms:      {bathrooms}")
+    print(f"Square footage: {sqft}")
+    print(f"Listing price:  ${price}")
+    print(f"Price per sqft: ${price_per_sqft}")
+
+    email_text = f"""Subject: New Listing — {address}, {neighborhood} | {bedrooms}BD/{bathrooms}BA | {price}
+
+Hi [Client Name],
+
+I wanted to share this exciting new listing with you.
+
+{listing_text}
+
+PROPERTY DETAILS:
+- Address: {address}
+- Neighborhood: {neighborhood}
+- Bedrooms: {bedrooms}
+- Bathrooms: {bathrooms}
+- Square Footage: {sqft}
+- Listing Price: ${price}
+- Price per Sq Ft: ${price_per_sqft}
+- Ocean View: {ocean_view}
+- Pool: {pool}
+
+Please don't hesitate to reach out if you'd like to schedule a showing or have any questions.
+
+Mahalo,
+[Your Name]
+[Your Phone]
+[Your Email]"""
 
     filename = address.replace(" ", "_") + "_listing.txt"
     with open(filename, "w") as f:
         f.write("PROPERTY LISTING\n")
-        f.write("================\n")
+        f.write("=" * 50 + "\n")
         f.write(f"Address: {address}\n")
-        f.write(f"Price: {price}\n")
+        f.write(f"Price: ${price}\n")
         f.write(f"Bedrooms: {bedrooms} | Bathrooms: {bathrooms} | Sqft: {sqft}\n")
+        f.write(f"Price per Sqft: ${price_per_sqft}\n")
         f.write("\n")
+        f.write("AI-GENERATED LISTING\n")
+        f.write("=" * 50 + "\n")
         f.write(listing_text)
+        f.write("\n\n")
+        f.write("PROPERTY ANALYSIS\n")
+        f.write("=" * 50 + "\n")
+        f.write(analysis_text)
+        f.write("\n\n")
+        f.write("EMAIL READY FORMAT\n")
+        f.write("=" * 50 + "\n")
+        f.write(email_text)
 
     print("")
     print(f"Listing saved to: {filename}")
+    print("(Includes listing, analysis, and email-ready format)")
 
 def view_saved_listings():
-    import os
     files = [f for f in os.listdir(".") if f.endswith("_listing.txt")]
     if not files:
         print("")
