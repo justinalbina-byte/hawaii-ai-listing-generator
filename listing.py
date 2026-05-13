@@ -13,6 +13,7 @@ def generate_listing():
     sqft = input("Square footage: ")
     price = input("Listing price: ")
     neighborhood = input("Neighborhood or area (e.g. Poipu, Kailua, North Shore): ")
+    island = input("Island (e.g. Kauai, Oahu, Maui, Big Island): ")
     ocean_view = input("Ocean view? (yes/no): ")
     pool = input("Pool? (yes/no): ")
     extra = input("One standout feature (e.g. chef's kitchen, newly renovated): ")
@@ -37,6 +38,7 @@ def generate_listing():
                 "content": f"""Write a professional MLS real estate listing for a Hawaii property with these details:
 Address: {address}
 Neighborhood: {neighborhood}
+Island: {island}
 Bedrooms: {bedrooms}
 Bathrooms: {bathrooms}
 Square footage: {sqft}
@@ -67,6 +69,7 @@ Write 2 paragraphs, around 150 words total. Make it warm, compelling, and specif
 Property details:
 Address: {address}
 Neighborhood: {neighborhood}
+Island: {island}
 Bedrooms: {bedrooms}
 Bathrooms: {bathrooms}
 Square footage: {sqft}
@@ -88,6 +91,64 @@ PRICE ANALYSIS:
 
     analysis_text = analysis_response.content[0].text
 
+    neighborhood_response = client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=512,
+        messages=[
+            {
+                "role": "user",
+                "content": f"""You are a Hawaii local expert. Provide a neighborhood report for {neighborhood} on {island}, Hawaii.
+
+Format your response exactly like this:
+
+WALKABILITY SCORE: X/10
+[2 sentence explanation of walkability, car dependency, and access to amenities on foot]
+
+NEARBY ATTRACTIONS:
+- [Attraction 1 and brief description]
+- [Attraction 2 and brief description]
+- [Attraction 3 and brief description]
+- [Attraction 4 and brief description]
+- [Attraction 5 and brief description]
+
+NEIGHBORHOOD VIBE:
+[2-3 sentences describing the overall feel, who it attracts, and what makes it unique]"""
+            }
+        ]
+    )
+
+    neighborhood_text = neighborhood_response.content[0].text
+
+    email_text = f"""Subject: New Listing — {address}, {neighborhood} | {bedrooms}BD/{bathrooms}BA | ${price}
+
+Hi [Client Name],
+
+I wanted to share this exciting new listing with you.
+
+{listing_text}
+
+PROPERTY DETAILS:
+- Address: {address}
+- Neighborhood: {neighborhood}
+- Island: {island}
+- Bedrooms: {bedrooms}
+- Bathrooms: {bathrooms}
+- Square Footage: {sqft}
+- Listing Price: ${price}
+- Price per Sq Ft: ${price_per_sqft}
+- Ocean View: {ocean_view}
+- Pool: {pool}
+
+NEIGHBORHOOD HIGHLIGHTS:
+{neighborhood_text}
+
+Please don't hesitate to reach out if you'd like to schedule a showing or have any questions.
+
+Mahalo,
+[Your Name]
+[Your Phone]
+[Your Email]"""
+
     print("=" * 50)
     print("AI-GENERATED LISTING")
     print("=" * 50)
@@ -101,41 +162,22 @@ PRICE ANALYSIS:
     print(analysis_text)
     print("")
     print("=" * 50)
+    print("NEIGHBORHOOD REPORT")
+    print("=" * 50)
+    print("")
+    print(neighborhood_text)
+    print("")
+    print("=" * 50)
     print("PROPERTY SUMMARY")
     print("=" * 50)
     print(f"Address:        {address}")
     print(f"Neighborhood:   {neighborhood}")
+    print(f"Island:         {island}")
     print(f"Bedrooms:       {bedrooms}")
     print(f"Bathrooms:      {bathrooms}")
     print(f"Square footage: {sqft}")
     print(f"Listing price:  ${price}")
     print(f"Price per sqft: ${price_per_sqft}")
-
-    email_text = f"""Subject: New Listing — {address}, {neighborhood} | {bedrooms}BD/{bathrooms}BA | {price}
-
-Hi [Client Name],
-
-I wanted to share this exciting new listing with you.
-
-{listing_text}
-
-PROPERTY DETAILS:
-- Address: {address}
-- Neighborhood: {neighborhood}
-- Bedrooms: {bedrooms}
-- Bathrooms: {bathrooms}
-- Square Footage: {sqft}
-- Listing Price: ${price}
-- Price per Sq Ft: ${price_per_sqft}
-- Ocean View: {ocean_view}
-- Pool: {pool}
-
-Please don't hesitate to reach out if you'd like to schedule a showing or have any questions.
-
-Mahalo,
-[Your Name]
-[Your Phone]
-[Your Email]"""
 
     filename = address.replace(" ", "_") + "_listing.txt"
     with open(filename, "w") as f:
@@ -154,13 +196,17 @@ Mahalo,
         f.write("=" * 50 + "\n")
         f.write(analysis_text)
         f.write("\n\n")
+        f.write("NEIGHBORHOOD REPORT\n")
+        f.write("=" * 50 + "\n")
+        f.write(neighborhood_text)
+        f.write("\n\n")
         f.write("EMAIL READY FORMAT\n")
         f.write("=" * 50 + "\n")
         f.write(email_text)
 
     print("")
     print(f"Listing saved to: {filename}")
-    print("(Includes listing, analysis, and email-ready format)")
+    print("(Includes listing, analysis, neighborhood report, and email format)")
 
 def view_saved_listings():
     files = [f for f in os.listdir(".") if f.endswith("_listing.txt")]
