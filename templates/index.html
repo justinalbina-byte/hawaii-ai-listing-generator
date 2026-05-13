@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hawaii AI Listing Generator</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, sans-serif; background: #f5f5f0; color: #1a1a1a; }
+        .header { background: #1a3a2a; color: white; padding: 2rem; text-align: center; }
+        .header h1 { font-size: 2rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .header p { color: #a8c5b5; font-size: 1rem; }
+        .container { max-width: 700px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: white; border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .card h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; color: #1a3a2a; border-bottom: 2px solid #e8f0eb; padding-bottom: 0.75rem; }
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; font-size: 0.875rem; font-weight: 500; color: #444; margin-bottom: 0.4rem; }
+        input, select { width: 100%; padding: 0.65rem 0.85rem; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; color: #1a1a1a; background: #fafafa; transition: border 0.2s; }
+        input:focus, select:focus { outline: none; border-color: #1a3a2a; background: white; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .btn { width: 100%; padding: 1rem; background: #1a3a2a; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem; transition: background 0.2s; }
+        .btn:hover { background: #2d5a42; }
+        .note { text-align: center; color: #888; font-size: 0.85rem; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Hawaii AI Listing Generator</h1>
+    <p>Generate professional MLS listings powered by AI</p>
+</div>
+
+<div class="container">
+    <form action="/generate" method="POST">
+        <div class="card">
+            <h2>Property Details</h2>
+            <div class="form-group">
+                <label>Property Address</label>
+                <input type="text" name="address" placeholder="e.g. 5332 Makalea St" required>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Neighborhood</label>
+                    <input type="text" name="neighborhood" placeholder="e.g. Poipu" required>
+                </div>
+                <div class="form-group">
+                    <label>Island</label>
+                    <select name="island">
+                        <option>Kauai</option>
+                        <option>Oahu</option>
+                        <option>Maui</option>
+                        <option>Big Island</option>
+                        <option>Molokai</option>
+                        <option>Lanai</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Bedrooms</label>
+                    <input type="number" name="bedrooms" placeholder="4" required>
+                </div>
+                <div class="form-group">
+                    <label>Bathrooms</label>
+                    <input type="number" name="bathrooms" placeholder="3.5" step="0.5" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Square Footage</label>
+                    <input type="text" name="sqft" placeholder="3200" required>
+                </div>
+                <div class="form-group">
+                    <label>Listing Price</label>
+                    <input type="text" name="price" placeholder="2,950,000" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Property Features</h2>
+            <div class="row">
+                <div class="form-group">
+                    <label>Ocean View</label>
+                    <select name="ocean_view">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Pool</label>
+                    <select name="pool">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Standout Feature</label>
+                <input type="text" name="extra" placeholder="e.g. chef's kitchen, pool waterfalls, newly renovated" required>
+            </div>
+            <button type="submit" class="btn">Generate Listing</button>
+            <p class="note">Generation takes about 15 seconds — please be patient</p>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
