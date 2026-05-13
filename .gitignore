@@ -1,4 +1,4 @@
 .env
-*.txt
+*_listing.txt
 __pycache__/
 .DS_Store
