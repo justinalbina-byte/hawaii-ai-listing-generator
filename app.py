@@ -124,5 +124,78 @@ def waitlist():
         f.write(email + "\n")
     return render_template("waitlist_success.html", email=email)
 
+@app.route("/open-house")
+def open_house():
+    return render_template("open_house.html")
+
+@app.route("/open-house/generate", methods=["POST"])
+def open_house_generate():
+    address = request.form["address"]
+    neighborhood = request.form["neighborhood"]
+    island = request.form["island"]
+    bedrooms = request.form["bedrooms"]
+    bathrooms = request.form["bathrooms"]
+    price = request.form["price"]
+    date = request.form["date"]
+    time_start = request.form["time_start"]
+    time_end = request.form["time_end"]
+    extra = request.form["extra"]
+
+    response = client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=1500,
+        messages=[{"role": "user", "content": f"""You are a Hawaii real estate marketing expert. Generate three open house announcements for this property:
+
+Address: {address}
+Neighborhood: {neighborhood}
+Island: {island}
+Bedrooms: {bedrooms}
+Bathrooms: {bathrooms}
+Price: {price}
+Open House Date: {date}
+Time: {time_start} to {time_end}
+Highlight: {extra}
+
+Format your response EXACTLY like this:
+
+INSTAGRAM POST:
+[2-3 sentences max, warm and exciting, include the date and time, end with relevant Hawaii hashtags]
+
+FACEBOOK POST:
+[3-4 sentences, friendly and detailed, include all property details and open house info, professional tone]
+
+EMAIL SUBJECT:
+[Compelling email subject line]
+
+EMAIL BODY:
+[Professional 3-4 sentence email announcing the open house, suitable to send to a client list]"""}]
+    )
+
+    content = response.content[0].text
+
+    sections = {}
+    for section in ["INSTAGRAM POST", "FACEBOOK POST", "EMAIL SUBJECT", "EMAIL BODY"]:
+        if section + ":" in content:
+            start = content.index(section + ":") + len(section + ":")
+            next_sections = [s + ":" for s in ["INSTAGRAM POST", "FACEBOOK POST", "EMAIL SUBJECT", "EMAIL BODY"] if s + ":" in content and content.index(s + ":") > start]
+            if next_sections:
+                end = content.index(next_sections[0])
+                sections[section] = content[start:end].strip()
+            else:
+                sections[section] = content[start:].strip()
+
+    return render_template("open_house_results.html",
+        address=address,
+        neighborhood=neighborhood,
+        island=island,
+        date=date,
+        time_start=time_start,
+        time_end=time_end,
+        price=price,
+        instagram=sections.get("INSTAGRAM POST", ""),
+        facebook=sections.get("FACEBOOK POST", ""),
+        email_subject=sections.get("EMAIL SUBJECT", ""),
+        email_body=sections.get("EMAIL BODY", "")
+    )
 if __name__ == "__main__":
     app.run(debug=True)
