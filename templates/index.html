@@ -11,7 +11,7 @@
         .nav { background: #0a1628; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
         .nav-badge { background: #c9a84c; color: #0a1628; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; letter-spacing: 0.5px; }
 
-        .hero { background: #0a1628; color: white; padding: 5rem 2rem 4rem; text-align: center; position: relative; overflow: hidden; }
+        .hero { background: #0a1628; color: white; padding: 5rem 2rem 4rem; text-align: center; }
         .hero-eyebrow { display: inline-block; background: rgba(201, 168, 76, 0.15); color: #c9a84c; border: 1px solid rgba(201, 168, 76, 0.3); padding: 6px 16px; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; }
         .hero h1 { font-size: 3rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem; letter-spacing: -1px; }
         .hero h1 span { color: #c9a84c; }
@@ -51,14 +51,6 @@
         .free-note p { font-size: 12px; color: #888; }
         .free-note strong { color: #c9a84c; }
         .note { text-align: center; color: #888; font-size: 0.85rem; margin-top: 1rem; }
-
-        .locked-section { background: white; border-radius: 16px; padding: 2rem; margin-bottom: 1.25rem; border: 1px solid #eee; position: relative; overflow: hidden; }
-        .locked-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(2px); border-radius: 16px; }
-        .locked-badge { background: #0a1628; color: #c9a84c; padding: 8px 20px; border-radius: 999px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 8px; }
-        .locked-sub { font-size: 12px; color: #888; }
-        .locked-content { opacity: 0.3; pointer-events: none; }
-        .locked-content h3 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; color: #0a1628; }
-        .locked-feature { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid #f5f5f5; font-size: 14px; color: #333; }
 
         .footer { background: #0a1628; color: #8892a4; text-align: center; padding: 2rem; font-size: 13px; margin-top: 3rem; }
         .footer strong { color: #c9a84c; }
@@ -200,48 +192,51 @@
     </form>
 
     <div class="section-label">
-    <h2>More tools coming soon</h2>
-    <p>Join the waitlist to get early access when pro launches</p>
-</div>
+        <h2>More tools coming soon</h2>
+        <p>Join the waitlist to get early access when pro launches</p>
+    </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
-    <div class="card" style="opacity:0.85;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:12px;right:12px;background:#0a1628;color:#c9a84c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:0.5px;">PRO</div>
-        <div style="font-size:24px;margin-bottom:0.75rem;">🏡</div>
-        <div style="font-size:0.95rem;font-weight:600;color:#0a1628;margin-bottom:0.4rem;">Open House Announcer</div>
-        <div style="font-size:12px;color:#888;line-height:1.6;">Generate social-ready open house posts for Instagram, Facebook, and email in one click.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;">
+        <a href="/open-house" style="text-decoration:none;">
+            <div class="card" style="position:relative;overflow:hidden;cursor:pointer;border:2px solid #c9a84c;height:100%;margin-bottom:0;">
+                <div style="position:absolute;top:12px;right:12px;background:#0a1628;color:#c9a84c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:0.5px;">LIVE</div>
+                <div style="font-size:24px;margin-bottom:0.75rem;">🏡</div>
+                <div style="font-size:0.95rem;font-weight:600;color:#0a1628;margin-bottom:0.4rem;">Open House Announcer</div>
+                <div style="font-size:12px;color:#888;line-height:1.6;">Generate social-ready open house posts for Instagram, Facebook, and email in one click.</div>
+                <div style="font-size:11px;color:#c9a84c;font-weight:600;margin-top:0.75rem;">Try it now →</div>
+            </div>
+        </a>
+        <div class="card" style="opacity:0.85;position:relative;overflow:hidden;margin-bottom:0;">
+            <div style="position:absolute;top:12px;right:12px;background:#0a1628;color:#c9a84c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:0.5px;">PRO</div>
+            <div style="font-size:24px;margin-bottom:0.75rem;">📄</div>
+            <div style="font-size:0.95rem;font-weight:600;color:#0a1628;margin-bottom:0.4rem;">Offer Letter Assistant</div>
+            <div style="font-size:12px;color:#888;line-height:1.6;">Craft compelling, professional offer letters tailored to Hawaii real estate transactions.</div>
+        </div>
+        <div class="card" style="opacity:0.85;position:relative;overflow:hidden;margin-bottom:0;">
+            <div style="position:absolute;top:12px;right:12px;background:#0a1628;color:#c9a84c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:0.5px;">PRO</div>
+            <div style="font-size:24px;margin-bottom:0.75rem;">📱</div>
+            <div style="font-size:0.95rem;font-weight:600;color:#0a1628;margin-bottom:0.4rem;">Social Media Generator</div>
+            <div style="font-size:12px;color:#888;line-height:1.6;">Turn any listing into scroll-stopping Instagram and Facebook posts with captions and hashtags.</div>
+        </div>
+        <div class="card" style="opacity:0.85;position:relative;overflow:hidden;margin-bottom:0;">
+            <div style="position:absolute;top:12px;right:12px;background:#0a1628;color:#c9a84c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:0.5px;">PRO</div>
+            <div style="font-size:24px;margin-bottom:0.75rem;">📊</div>
+            <div style="font-size:0.95rem;font-weight:600;color:#0a1628;margin-bottom:0.4rem;">Market Report Generator</div>
+            <div style="font-size:12px;color:#888;line-height:1.6;">Generate detailed neighborhood market snapshots to share with buyers and sellers.</div>
+        </div>
+        <div class="card" style="opacity:0.85;position:relative;overflow:hidden;margin-bottom:0;">
+            <div style="position:absolute;top:12px;right:12px;background:#0a1628;color:#c9a84c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:0.5px;">PRO</div>
+            <div style="font-size:24px;margin-bottom:0.75rem;">✉️</div>
+            <div style="font-size:0.95rem;font-weight:600;color:#0a1628;margin-bottom:0.4rem;">Client Email Templates</div>
+            <div style="font-size:12px;color:#888;line-height:1.6;">Professional client communication templates for every stage of the buying and selling process.</div>
+        </div>
+        <div class="card" style="opacity:0.85;position:relative;overflow:hidden;margin-bottom:0;">
+            <div style="position:absolute;top:12px;right:12px;background:#0a1628;color:#c9a84c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:0.5px;">PRO</div>
+            <div style="font-size:24px;margin-bottom:0.75rem;">📝</div>
+            <div style="font-size:0.95rem;font-weight:600;color:#0a1628;margin-bottom:0.4rem;">Bio Generator</div>
+            <div style="font-size:12px;color:#888;line-height:1.6;">Generate a polished realtor bio for your website, MLS profile, and social media pages.</div>
+        </div>
     </div>
-    <div class="card" style="opacity:0.85;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:12px;right:12px;background:#0a1628;color:#c9a84c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:0.5px;">PRO</div>
-        <div style="font-size:24px;margin-bottom:0.75rem;">📄</div>
-        <div style="font-size:0.95rem;font-weight:600;color:#0a1628;margin-bottom:0.4rem;">Offer Letter Assistant</div>
-        <div style="font-size:12px;color:#888;line-height:1.6;">Craft compelling, professional offer letters tailored to Hawaii real estate transactions.</div>
-    </div>
-    <div class="card" style="opacity:0.85;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:12px;right:12px;background:#0a1628;color:#c9a84c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:0.5px;">PRO</div>
-        <div style="font-size:24px;margin-bottom:0.75rem;">📱</div>
-        <div style="font-size:0.95rem;font-weight:600;color:#0a1628;margin-bottom:0.4rem;">Social Media Generator</div>
-        <div style="font-size:12px;color:#888;line-height:1.6;">Turn any listing into scroll-stopping Instagram and Facebook posts with captions and hashtags.</div>
-    </div>
-    <div class="card" style="opacity:0.85;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:12px;right:12px;background:#0a1628;color:#c9a84c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:0.5px;">PRO</div>
-        <div style="font-size:24px;margin-bottom:0.75rem;">📊</div>
-        <div style="font-size:0.95rem;font-weight:600;color:#0a1628;margin-bottom:0.4rem;">Market Report Generator</div>
-        <div style="font-size:12px;color:#888;line-height:1.6;">Generate detailed neighborhood market snapshots to share with buyers and sellers.</div>
-    </div>
-    <div class="card" style="opacity:0.85;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:12px;right:12px;background:#0a1628;color:#c9a84c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:0.5px;">PRO</div>
-        <div style="font-size:24px;margin-bottom:0.75rem;">✉️</div>
-        <div style="font-size:0.95rem;font-weight:600;color:#0a1628;margin-bottom:0.4rem;">Client Email Templates</div>
-        <div style="font-size:12px;color:#888;line-height:1.6;">Professional client communication templates for every stage of the buying and selling process.</div>
-    </div>
-    <div class="card" style="opacity:0.85;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:12px;right:12px;background:#0a1628;color:#c9a84c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:0.5px;">PRO</div>
-        <div style="font-size:24px;margin-bottom:0.75rem;">📝</div>
-        <div style="font-size:0.95rem;font-weight:600;color:#0a1628;margin-bottom:0.4rem;">Bio Generator</div>
-        <div style="font-size:12px;color:#888;line-height:1.6;">Generate a polished realtor bio for your website, MLS profile, and social media pages.</div>
-    </div>
-</div>
 
     <div class="card" style="margin-bottom:2rem;">
         <div class="card-header">
