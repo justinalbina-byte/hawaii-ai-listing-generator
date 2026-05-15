@@ -11,7 +11,9 @@ app.secret_key = "alohaagent-secret-2024"
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    count = session.get("count", 0)
+    remaining = max(0, 3 - count)
+    return render_template("index.html", remaining=remaining, count=count)
 
 @app.route("/generate", methods=["POST"])
 def generate():

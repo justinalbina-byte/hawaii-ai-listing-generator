@@ -9,10 +9,6 @@
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f7f4; color: #1a1a2e; }
 
         .nav { background: #0a1628; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
-        .nav-logo { display: flex; align-items: center; gap: 10px; }
-        .nav-logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #c9a84c, #e8c97a); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-        .nav-logo-text { color: white; font-size: 1.2rem; font-weight: 600; letter-spacing: -0.3px; }
-        .nav-logo-text span { color: #c9a84c; }
         .nav-badge { background: #c9a84c; color: #0a1628; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; letter-spacing: 0.5px; }
 
         .hero { background: #0a1628; color: white; padding: 5rem 2rem 4rem; text-align: center; position: relative; overflow: hidden; }
@@ -38,6 +34,10 @@
         .card-title { font-size: 1rem; font-weight: 600; color: #0a1628; }
         .card-subtitle { font-size: 12px; color: #888; margin-top: 1px; }
 
+        .usage-bar { background: white; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; border: 1px solid #eee; }
+        .usage-track { height: 6px; background: #f0f0f0; border-radius: 999px; margin-top: 0.5rem; overflow: hidden; }
+        .usage-fill { height: 6px; background: #c9a84c; border-radius: 999px; transition: width 0.3s; }
+
         .form-group { margin-bottom: 1.1rem; }
         label { display: block; font-size: 0.8rem; font-weight: 600; color: #555; margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.5px; }
         input, select { width: 100%; padding: 0.7rem 0.9rem; border: 1.5px solid #e8e8e8; border-radius: 10px; font-size: 0.95rem; color: #1a1a2e; background: #fafafa; transition: all 0.2s; }
@@ -50,6 +50,7 @@
         .free-note { text-align: center; margin-top: 1rem; }
         .free-note p { font-size: 12px; color: #888; }
         .free-note strong { color: #c9a84c; }
+        .note { text-align: center; color: #888; font-size: 0.85rem; margin-top: 1rem; }
 
         .locked-section { background: white; border-radius: 16px; padding: 2rem; margin-bottom: 1.25rem; border: 1px solid #eee; position: relative; overflow: hidden; }
         .locked-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(2px); border-radius: 16px; }
@@ -70,9 +71,7 @@
 </div>
 
 <nav class="nav">
-    <div class="nav-logo">
-<img src="/static/logo.svg" style="height:120px;" alt="AlohaAgent logo">  
-    </div>
+    <img src="/static/logo.svg" style="height:120px;" alt="AlohaAgent logo">
     <div class="nav-badge">BETA</div>
 </nav>
 
@@ -101,6 +100,16 @@
     <div class="section-label">
         <h2>Generate a listing</h2>
         <p>Fill in the property details and let AI do the rest</p>
+    </div>
+
+    <div class="usage-bar">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-size:13px;color:#555;">Free listings used</span>
+            <span style="font-size:13px;font-weight:600;color:#0a1628;">{{ count }}/3</span>
+        </div>
+        <div class="usage-track">
+            <div class="usage-fill" style="width:{{ (count / 3 * 100)|int }}%"></div>
+        </div>
     </div>
 
     <form action="/generate" method="POST">
@@ -185,42 +194,42 @@
             </div>
             <button type="submit" class="btn">Generate Listing with AI</button>
             <div class="free-note">
-                <p>Free tier · <strong>3 listings/month</strong> · No credit card needed</p>
+                <p>Free tier · <strong>{{ 3 - count }} listing{{ 's' if (3 - count) != 1 else '' }} remaining</strong> · No credit card needed</p>
             </div>
         </div>
     </form>
 
     <div class="locked-section">
-    <div class="locked-content">
-        <h3>More AlohaAgent Tools</h3>
-        <div class="locked-feature">🏡 Open House Announcer — generate social-ready open house posts</div>
-        <div class="locked-feature">📄 Offer Letter Assistant — craft compelling offer letters</div>
-        <div class="locked-feature">📱 Social Media Post Generator — Instagram & Facebook ready</div>
-        <div class="locked-feature">📊 Market Report Generator — neighborhood market snapshots</div>
-        <div class="locked-feature">✉️ Client Email Templates — professional client communication</div>
+        <div class="locked-content">
+            <h3>More AlohaAgent Tools</h3>
+            <div class="locked-feature">🏡 Open House Announcer — generate social-ready open house posts</div>
+            <div class="locked-feature">📄 Offer Letter Assistant — craft compelling offer letters</div>
+            <div class="locked-feature">📱 Social Media Post Generator — Instagram & Facebook ready</div>
+            <div class="locked-feature">📊 Market Report Generator — neighborhood market snapshots</div>
+            <div class="locked-feature">✉️ Client Email Templates — professional client communication</div>
+        </div>
+        <div class="locked-overlay">
+            <div class="locked-badge">🔒 PRO FEATURES</div>
+            <div class="locked-sub">Coming soon — join the waitlist below</div>
+        </div>
     </div>
-    <div class="locked-overlay">
-        <div class="locked-badge">🔒 PRO FEATURES</div>
-        <div class="locked-sub">Coming soon — join the waitlist below</div>
-    </div>
-</div>
 
-<div class="card" style="margin-bottom:2rem;">
-    <div class="card-header">
-        <div class="card-icon">🌺</div>
-        <div>
-            <div class="card-title">Join the waitlist</div>
-            <div class="card-subtitle">Be first to access premium tools when they launch</div>
+    <div class="card" style="margin-bottom:2rem;">
+        <div class="card-header">
+            <div class="card-icon">🌺</div>
+            <div>
+                <div class="card-title">Join the waitlist</div>
+                <div class="card-subtitle">Be first to access premium tools when they launch</div>
+            </div>
         </div>
+        <form action="/waitlist" method="POST">
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" name="email" placeholder="your@email.com" required>
+            </div>
+            <button type="submit" class="btn" style="background:#c9a84c;color:#0a1628;">Join Waitlist</button>
+        </form>
     </div>
-    <form action="/waitlist" method="POST">
-        <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" name="email" placeholder="your@email.com" required>
-        </div>
-        <button type="submit" class="btn" style="background:#c9a84c;color:#0a1628;">Join Waitlist</button>
-    </form>
-</div>
 
 </div>
 
