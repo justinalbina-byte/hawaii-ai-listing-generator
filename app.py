@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from dotenv import load_dotenv
 import os
 import anthropic
@@ -7,6 +7,7 @@ load_dotenv()
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 app = Flask(__name__)
+app.secret_key = "alohaagent-secret-2024"
 
 @app.route("/")
 def home():
@@ -14,6 +15,13 @@ def home():
 
 @app.route("/generate", methods=["POST"])
 def generate():
+    if "count" not in session:
+        session["count"] = 0
+
+    if session["count"] >= 3:
+        return render_template("limit.html")
+
+    session["count"] += 1
     address = request.form["address"]
     bedrooms = request.form["bedrooms"]
     bathrooms = request.form["bathrooms"]
