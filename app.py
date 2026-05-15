@@ -107,5 +107,12 @@ NEIGHBORHOOD VIBE:
         neighborhood_report=neighborhood_response.content[0].text
     )
 
+@app.route("/waitlist", methods=["POST"])
+def waitlist():
+    email = request.form["email"]
+    with open("waitlist.txt", "a") as f:
+        f.write(email + "\n")
+    return render_template("waitlist_success.html", email=email)
+
 if __name__ == "__main__":
     app.run(debug=True)
