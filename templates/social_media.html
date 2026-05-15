@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Generator — AlohaAgent</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f7f4; color: #1a1a2e; }
+        .nav { background: #0a1628; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .nav-badge { background: #c9a84c; color: #0a1628; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; letter-spacing: 0.5px; }
+        .hero { background: #0a1628; color: white; padding: 3rem 2rem; text-align: center; }
+        .hero-eyebrow { display: inline-block; background: rgba(201,168,76,0.15); color: #c9a84c; border: 1px solid rgba(201,168,76,0.3); padding: 6px 16px; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; }
+        .hero h1 { font-size: 2.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem; letter-spacing: -1px; }
+        .hero h1 span { color: #c9a84c; }
+        .hero p { font-size: 1rem; color: #8892a4; max-width: 500px; margin: 0 auto; line-height: 1.7; }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 1rem; }
+        .card { background: white; border-radius: 16px; padding: 2rem; margin: 1.25rem 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #eee; }
+        .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #f0f0f0; }
+        .card-icon { width: 36px; height: 36px; background: #0a1628; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .card-title { font-size: 1rem; font-weight: 600; color: #0a1628; }
+        .card-subtitle { font-size: 12px; color: #888; margin-top: 1px; }
+        .form-group { margin-bottom: 1.1rem; }
+        label { display: block; font-size: 0.8rem; font-weight: 600; color: #555; margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        input, select { width: 100%; padding: 0.7rem 0.9rem; border: 1.5px solid #e8e8e8; border-radius: 10px; font-size: 0.95rem; color: #1a1a2e; background: #fafafa; transition: all 0.2s; }
+        input:focus, select:focus { outline: none; border-color: #c9a84c; background: white; box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .tone-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 0.35rem; }
+        .tone-option { border: 1.5px solid #e8e8e8; border-radius: 10px; padding: 0.75rem; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .tone-option input { display: none; }
+        .tone-option:has(input:checked) { border-color: #c9a84c; background: rgba(201,168,76,0.08); }
+        .tone-emoji { font-size: 20px; display: block; margin-bottom: 4px; }
+        .tone-label { font-size: 12px; font-weight: 600; color: #0a1628; }
+        .tone-sub { font-size: 11px; color: #888; margin-top: 2px; }
+        .btn { width: 100%; padding: 1rem; background: #0a1628; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 0.75rem; transition: all 0.2s; }
+        .btn:hover { background: #162840; transform: translateY(-1px); }
+        .back-link { display: inline-flex; align-items: center; gap: 6px; color: #8892a4; font-size: 13px; text-decoration: none; margin: 1.5rem 0 0; }
+        .back-link:hover { color: #c9a84c; }
+        .footer { background: #0a1628; color: #8892a4; text-align: center; padding: 2rem; font-size: 13px; margin-top: 3rem; }
+        .footer strong { color: #c9a84c; }
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <img src="/static/logo.svg" style="height:120px;" alt="AlohaAgent logo">
+    <div class="nav-badge">PRO</div>
+</nav>
+
+<div class="hero">
+    <div class="hero-eyebrow">Pro Tool</div>
+    <h1>Social Media <span>Generator</span></h1>
+    <p>Turn any listing into a full social media package — Instagram, Facebook, X, and hashtags in one click.</p>
+</div>
+
+<div class="container">
+    <a href="/" class="back-link">← Back to home</a>
+
+    <form action="/social-media/generate" method="POST">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">🏠</div>
+                <div>
+                    <div class="card-title">Property Details</div>
+                    <div class="card-subtitle">Tell us about the listing</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Property Address</label>
+                <input type="text" name="address" placeholder="e.g. 5332 Makalea St" required>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Neighborhood</label>
+                    <input type="text" name="neighborhood" placeholder="e.g. Poipu" required>
+                </div>
+                <div class="form-group">
+                    <label>Island</label>
+                    <select name="island">
+                        <option>Kauai</option>
+                        <option>Oahu</option>
+                        <option>Maui</option>
+                        <option>Big Island</option>
+                        <option>Molokai</option>
+                        <option>Lanai</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Bedrooms</label>
+                    <input type="number" name="bedrooms" placeholder="4" required>
+                </div>
+                <div class="form-group">
+                    <label>Bathrooms</label>
+                    <input type="number" name="bathrooms" placeholder="3.5" step="0.5" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Square Footage</label>
+                    <input type="text" name="sqft" placeholder="3200" required>
+                </div>
+                <div class="form-group">
+                    <label>Listing Price</label>
+                    <input type="text" name="price" placeholder="2,950,000" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Ocean View</label>
+                    <select name="ocean_view">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Pool</label>
+                    <select name="pool">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Standout Feature</label>
+                <input type="text" name="extra" placeholder="e.g. chef's kitchen, pool waterfalls, newly renovated" required>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">🎨</div>
+                <div>
+                    <div class="card-title">Choose Your Tone</div>
+                    <div class="card-subtitle">How should the posts sound?</div>
+                </div>
+            </div>
+            <div class="tone-grid">
+                <label class="tone-option">
+                    <input type="radio" name="tone" value="Luxury and aspirational" checked>
+                    <span class="tone-emoji">💎</span>
+                    <div class="tone-label">Luxury</div>
+                    <div class="tone-sub">Aspirational & premium</div>
+                </label>
+                <label class="tone-option">
+                    <input type="radio" name="tone" value="Warm and welcoming">
+                    <span class="tone-emoji">🌺</span>
+                    <div class="tone-label">Warm</div>
+                    <div class="tone-sub">Friendly & inviting</div>
+                </label>
+                <label class="tone-option">
+                    <input type="radio" name="tone" value="Exciting and urgent">
+                    <span class="tone-emoji">🔥</span>
+                    <div class="tone-label">Urgent</div>
+                    <div class="tone-sub">Act now energy</div>
+                </label>
+                <label class="tone-option">
+                    <input type="radio" name="tone" value="Professional and informative">
+                    <span class="tone-emoji">📊</span>
+                    <div class="tone-label">Professional</div>
+                    <div class="tone-sub">Clean & factual</div>
+                </label>
+                <label class="tone-option">
+                    <input type="radio" name="tone" value="Fun and playful">
+                    <span class="tone-emoji">🤙</span>
+                    <div class="tone-label">Playful</div>
+                    <div class="tone-sub">Casual & fun</div>
+                </label>
+                <label class="tone-option">
+                    <input type="radio" name="tone" value="Storytelling and emotional">
+                    <span class="tone-emoji">✨</span>
+                    <div class="tone-label">Story</div>
+                    <div class="tone-sub">Emotional & narrative</div>
+                </label>
+            </div>
+            <button type="submit" class="btn" style="margin-top:1.5rem;">Generate Social Media Posts</button>
+        </div>
+    </form>
+</div>
+
+<div class="footer">
+    <strong>AlohaAgent</strong> by AlohaForge · AI tools built for Hawaii real estate professionals
+</div>
+
+</body>
+</html>

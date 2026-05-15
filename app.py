@@ -197,5 +197,79 @@ EMAIL BODY:
         email_subject=sections.get("EMAIL SUBJECT", ""),
         email_body=sections.get("EMAIL BODY", "")
     )
+@app.route("/social-media")
+def social_media():
+    return render_template("social_media.html")
+
+@app.route("/social-media/generate", methods=["POST"])
+def social_media_generate():
+    address = request.form["address"]
+    neighborhood = request.form["neighborhood"]
+    island = request.form["island"]
+    bedrooms = request.form["bedrooms"]
+    bathrooms = request.form["bathrooms"]
+    sqft = request.form["sqft"]
+    price = request.form["price"]
+    ocean_view = request.form["ocean_view"]
+    pool = request.form["pool"]
+    extra = request.form["extra"]
+    tone = request.form["tone"]
+
+    response = client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=1500,
+        messages=[{"role": "user", "content": f"""You are a Hawaii real estate social media expert. Generate social media posts for this property listing.
+
+Property Details:
+Address: {address}
+Neighborhood: {neighborhood}
+Island: {island}
+Bedrooms: {bedrooms}
+Bathrooms: {bathrooms}
+Square footage: {sqft}
+Price: {price}
+Ocean view: {ocean_view}
+Pool: {pool}
+Standout feature: {extra}
+Tone: {tone}
+
+Format your response EXACTLY like this:
+
+INSTAGRAM CAPTION:
+[2-3 punchy sentences, engaging and visual, include price, end with a call to action]
+
+FACEBOOK POST:
+[4-5 sentences, more detailed and informative, include all key details, professional yet warm]
+
+X POST:
+[Under 280 characters, punchy and attention grabbing, include price]
+
+HASHTAGS:
+[20-25 relevant hashtags including Hawaii specific ones, real estate ones, and neighborhood specific ones]"""}]
+    )
+
+    content = response.content[0].text
+
+    sections = {}
+    for section in ["INSTAGRAM CAPTION", "FACEBOOK POST", "X POST", "HASHTAGS"]:
+        if section + ":" in content:
+            start = content.index(section + ":") + len(section + ":")
+            next_sections = [s + ":" for s in ["INSTAGRAM CAPTION", "FACEBOOK POST", "X POST", "HASHTAGS"] if s + ":" in content and content.index(s + ":") > start]
+            if next_sections:
+                end = content.index(next_sections[0])
+                sections[section] = content[start:end].strip()
+            else:
+                sections[section] = content[start:].strip()
+
+    return render_template("social_media_results.html",
+        address=address,
+        neighborhood=neighborhood,
+        island=island,
+        price=price,
+        instagram=sections.get("INSTAGRAM CAPTION", ""),
+        facebook=sections.get("FACEBOOK POST", ""),
+        x_post=sections.get("X POST", ""),
+        hashtags=sections.get("HASHTAGS", "")
+    )
 if __name__ == "__main__":
     app.run(debug=True)
